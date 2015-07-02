@@ -176,6 +176,15 @@ describe('helpers', function() {
             });
         });
 
+        it('should not find the node_modules directory', function(done) {
+
+            helpers.findNodeModulesPath('/usr/local/etc/', function(err, foundPath) {
+                assert.ok(err);
+                assert.isUndefined(foundPath);
+                done();
+            });
+        });
+
         it('should find the node_modules/{module} directory', function(done) {
             var shouldPath = path.join(__dirname, '../node_modules/mocha');
 
@@ -247,6 +256,17 @@ describe('helpers', function() {
             var shouldPath = path.resolve(__dirname, 'src/index.js');
 
             helpers.findWithRequireSemantics(__dirname, './src', function(err, foundData) {
+                assert.isNull(err);
+                assert.equal(foundData.foundPath, shouldPath);
+                assert.isObject(foundData.statInfo);
+                done();
+            });
+        });
+
+        it('should use require() semantics to find a file within node_modules', function(done) {
+            var shouldPath = path.resolve(__dirname, '../node_modules/lodash/array/chunk.js');
+
+            helpers.findWithRequireSemantics(__dirname, 'lodash/array/chunk', function(err, foundData) {
                 assert.isNull(err);
                 assert.equal(foundData.foundPath, shouldPath);
                 assert.isObject(foundData.statInfo);
