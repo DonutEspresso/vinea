@@ -1,6 +1,6 @@
 # vinea
 
-[![NPM Version](https://img.shields.io/npm/v/errors.svg)](https://npmjs.org/package/errors)
+[![NPM Version](https://img.shields.io/npm/v/vinea.svg)](https://npmjs.org/package/vinea)
 [![Build Status](https://travis-ci.org/DonutEspresso/vinea.svg?branch=master)](https://travis-ci.org/DonutEspresso/vinea)
 [![Coverage Status](https://coveralls.io/repos/DonutEspresso/vinea/badge.svg?branch=master)](https://coveralls.io/r/DonutEspresso/vinea?branch=master)
 [![Dependency Status](https://david-dm.org/DonutEspresso/vinea.svg)](https://david-dm.org/DonutEspresso/vinea)
