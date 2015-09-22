@@ -4,6 +4,7 @@
 ROOT           := $(shell pwd)
 NODE_MODULES   := $(ROOT)/node_modules
 NODE_BIN       := $(NODE_MODULES)/.bin
+TOOLS          := $(ROOT)/tools
 
 
 #
@@ -15,7 +16,9 @@ MOCHA       := $(NODE_BIN)/mocha
 _MOCHA      := $(NODE_BIN)/_mocha
 ISTANBUL    := $(NODE_BIN)/istanbul
 COVERALLS   := $(NODE_BIN)/coveralls
+NSP         := $(NODE_BIN)/nsp
 NPM		    := npm
+NSP_BADGE   := $(TOOLS)/nspBadge.js
 
 
 #
@@ -27,11 +30,8 @@ LIB_FILES  	   := $(ROOT)/lib
 TEST_FILES     := $(ROOT)/test
 COVERAGE_FILES := $(ROOT)/coverage
 LCOV           := $(ROOT)/coverage/lcov.info
-
-# src is everything except node_modules and the example dir
-SRCS           := $(shell find $(LIB_FILES) $(TEST_FILES) -name '*.js' -type f \
-				-not \( -path "./node_modules/*" -prune \) \
-				-not \( -path "./example/*" -prune \))
+SHRINKWRAP     := $(ROOT)/npm-shrinkwrap.json
+SRCS           := $(shell find $(LIB_FILES) $(TEST_FILES) -name '*.js' -type f)
 
 #
 # Targets
@@ -53,31 +53,39 @@ githooks:
 
 .PHONY: lint
 lint: node_modules $(ESLINT) $(SRCS)
-	$(ESLINT) $(SRCS)
+	@$(ESLINT) $(SRCS)
+
+
+# make nsp always pass
+.PHONY: nsp
+nsp: node_modules $(NSP)
+	$(NPM) shrinkwrap --dev
+	@($(NSP) audit-shrinkwrap || echo 1) | $(NSP_BADGE)
+	@rm $(SHRINKWRAP)
 
 
 .PHONY: codestyle
 codestyle: node_modules $(JSCS) $(SRCS)
-	$(JSCS) $(SRCS)
+	@$(JSCS) $(SRCS)
 
 
 .PHONY: codestyle-fix
 codestyle-fix: node_modules $(JSCS) $(SRCS)
-	$(JSCS) $(SRCS) --fix
+	@$(JSCS) $(SRCS) --fix
 
 
 .PHONY: prepush
-prepush: node_modules lint codestyle test
+prepush: node_modules lint codestyle test nsp
 
 
 .PHONY: test
 test: node_modules $(MOCHA) $(SRCS)
-	$(MOCHA) -R spec
+	@$(MOCHA) -R spec --full-trace
 
 
 .PHONY: coverage
 coverage: node_modules $(ISTANBUL) $(SRCS)
-	$(ISTANBUL) cover $(_MOCHA) --report lcovonly -- -R spec
+	@$(ISTANBUL) cover $(_MOCHA) --report lcovonly -- -R spec
 
 
 .PHONY: report-coverage
