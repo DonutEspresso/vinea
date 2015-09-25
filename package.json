@@ -29,14 +29,13 @@
     "prepush": "make prepush"
   },
   "devDependencies": {
-    "chai": "^3.0.0",
+    "chai": "^3.3.0",
     "coveralls": "^2.11.2",
-    "eslint": "^0.24.0",
-    "istanbul": "^0.3.20",
+    "eslint": "^1.5.1",
+    "istanbul": "^0.3.21",
     "jscs": "^2.1.1",
     "mocha": "^2.3.3",
-    "nsp": "^1.1.0",
-    "run-sequence": "^1.1.0"
+    "nsp": "^1.1.0"
   },
   "dependencies": {
     "assert-plus": "^0.1.5",
