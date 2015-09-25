@@ -6,7 +6,7 @@
 [![Dependency Status](https://david-dm.org/DonutEspresso/vinea.svg)](https://david-dm.org/DonutEspresso/vinea)
 [![devDependency Status](https://david-dm.org/DonutEspresso/vinea/dev-status.svg)](https://david-dm.org/DonutEspresso/vinea#info=devDependencies)
 [![bitHound Score](https://www.bithound.io/github/DonutEspresso/vinea/badges/score.svg)](https://www.bithound.io/github/DonutEspresso/vinea/master)
-[![NSP Status](https://img.shields.io/badge/NSP%20status-vulnerabilities%20found-red.svg)](https://travis-ci.org/DonutEspresso/vinea)
+[![NSP Status](https://img.shields.io/badge/NSP%20status-no%20vulnerabilities-green.svg)](https://travis-ci.org/DonutEspresso/vinea)
 
 > find files and paths using node.js `require` semantics
 
