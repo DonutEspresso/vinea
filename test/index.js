@@ -46,7 +46,7 @@ describe('helpers', function() {
         it('should identify nearest parent path between two given paths', function() {
             var testDir = path.join(__dirname);
             var testSrcDir = path.join(testDir, './src');
-            var moduleDir = path.join(testDir, '../');
+            var moduleDir = path.join(testDir, '..');
             var buildDir = path.join(moduleDir, './build');
 
             assert.equal(helpers.findParentPath(buildDir, testDir), moduleDir);
@@ -59,7 +59,23 @@ describe('helpers', function() {
                 '/Users/me/Sandbox/app/bb',
                 '/Users/me/Sandbox/app/ab'
             );
-            assert.equal(parentPath, '/Users/me/Sandbox/app/');
+            assert.equal(parentPath, '/Users/me/Sandbox/app');
+
+            // try with absolute paths that have identical chars after ending
+            // directory.
+            var parentPath2 = helpers.findParentPath(
+                '/Users/me/Sandbox/app/node_modules',
+                '/Users/me/Sandbox/app/nero/src'
+            );
+            assert.equal(parentPath2, '/Users/me/Sandbox/app');
+
+            // try with absolute paths that have identical chars after ending
+            // directory.
+            var parentPath3 = helpers.findParentPath(
+                '/Users/me/Sandbox/app/foo',
+                '/Users/me/Sandbox/app/bar'
+            );
+            assert.equal(parentPath3, '/Users/me/Sandbox/app');
         });
 
         it('should identify string "node_modules" is found in path', function() {
