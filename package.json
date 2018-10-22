@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "assert-plus": "^0.1.5",
-    "lodash": "^3.9.3",
+    "lodash": "^4.17.11",
     "vasync": "^1.6.3",
     "verror": "^1.6.0"
   }
