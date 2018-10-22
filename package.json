@@ -1,6 +1,6 @@
 {
   "name": "vinea",
-  "version": "1.0.4",
+  "version": "1.0.3",
   "main": "lib/index.js",
   "description": "find files and paths using node.js `require` semantics",
   "homepage": "https://github.com/DonutEspresso/vinea",
