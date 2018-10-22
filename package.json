@@ -29,13 +29,18 @@
     "prepush": "make prepush"
   },
   "devDependencies": {
-    "chai": "^3.3.0",
-    "coveralls": "^2.11.2",
-    "eslint": "^1.5.1",
-    "istanbul": "^0.3.21",
-    "jscs": "^2.1.1",
-    "mocha": "^2.3.3",
-    "nsp": "^1.1.0"
+    "chai": "^4.1.2",
+    "conventional-changelog-angular": "^5.0.0",
+    "conventional-recommended-bump": "^4.0.0",
+    "coveralls": "^3.0.1",
+    "documentation": "^8.0.0",
+    "eslint": "^4.19.1",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-prettier": "^2.6.0",
+    "mocha": "^5.2.0",
+    "nyc": "^12.0.2",
+    "prettier": "^1.13.5",
+    "unleash": "^2.0.1"
   },
   "dependencies": {
     "assert-plus": "^0.1.5",

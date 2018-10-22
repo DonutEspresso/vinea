@@ -3,18 +3,15 @@
 'use strict';
 
 // core
-var path     = require('path');
+var path = require('path');
 
-var chai     = require('chai');
-var helpers  = require('../lib');
+var chai = require('chai');
+var helpers = require('../lib');
 
 var assert = chai.assert;
 
-
 describe('helpers', function() {
-
     describe('require statement introspection', function() {
-
         it('should identify require() calls into node_modules', function() {
             assert.equal(helpers.isNodeModuleRequire('lodash'), true);
             assert.equal(helpers.isNodeModuleRequire('lodash/array'), true);
@@ -29,8 +26,14 @@ describe('helpers', function() {
 
         it('should identify require() calls to node_module entry points', function() {
             assert.equal(helpers.isNodeModuleMainRequire('lodash'), true);
-            assert.equal(helpers.isNodeModuleMainRequire('lodash/array'), false);
-            assert.equal(helpers.isNodeModuleMainRequire('lodash/array/map'), false);
+            assert.equal(
+                helpers.isNodeModuleMainRequire('lodash/array'),
+                false
+            );
+            assert.equal(
+                helpers.isNodeModuleMainRequire('lodash/array/map'),
+                false
+            );
             assert.equal(helpers.isNodeModuleMainRequire('./a'), false);
             assert.equal(helpers.isNodeModuleMainRequire('./a.js'), false);
             assert.equal(helpers.isNodeModuleMainRequire('../a'), false);
@@ -38,11 +41,9 @@ describe('helpers', function() {
             assert.equal(helpers.isNodeModuleMainRequire('/a'), false);
             assert.equal(helpers.isNodeModuleMainRequire('/a.js'), false);
         });
-
     });
 
     describe('file path introspection', function() {
-
         it('should identify nearest parent path between two given paths', function() {
             var testDir = path.join(__dirname, './');
             var testSrcDir = path.join(testDir, './src/');
@@ -51,7 +52,10 @@ describe('helpers', function() {
 
             assert.equal(helpers.findParentPath(buildDir, testDir), moduleDir);
             assert.equal(helpers.findParentPath(testSrcDir, testDir), testDir);
-            assert.equal(helpers.findParentPath(testSrcDir, buildDir), moduleDir);
+            assert.equal(
+                helpers.findParentPath(testSrcDir, buildDir),
+                moduleDir
+            );
 
             // try with absolute paths that have identical chars after one
             // differing char.
@@ -90,7 +94,9 @@ describe('helpers', function() {
 
         it('should find node module name from path', function() {
             assert.equal(
-                helpers.getModuleNameFromPath('/project/node_modules/lodash/array/map'),
+                helpers.getModuleNameFromPath(
+                    '/project/node_modules/lodash/array/map'
+                ),
                 'lodash'
             );
             assert.equal(
@@ -98,23 +104,28 @@ describe('helpers', function() {
                 ''
             );
             assert.equal(
-                helpers.getModuleNameFromPath('/project/node_modules/lodash/node_modules/jquery'),
+                helpers.getModuleNameFromPath(
+                    '/project/node_modules/lodash/node_modules/jquery'
+                ),
                 'jquery'
             );
             assert.equal(
-                helpers.getModuleNameFromPath('/project/node_modules/lodash/node_modules/jquery/subdir'),
+                helpers.getModuleNameFromPath(
+                    '/project/node_modules/lodash/node_modules/jquery/subdir'
+                ),
                 'jquery'
             );
         });
-
     });
-
 
     describe('file system traversal (async)', function() {
         it('should find an item in current directory', function(done) {
             var shouldPath = path.join(__dirname, '.eslintrc');
 
-            helpers.findItem('.eslintrc', 'file', __dirname, true, function(err, foundPath) {
+            helpers.findItem('.eslintrc', 'file', __dirname, true, function(
+                err,
+                foundPath
+            ) {
                 assert.isNull(err);
                 assert.equal(foundPath, shouldPath);
                 done();
@@ -124,7 +135,10 @@ describe('helpers', function() {
         it('should find an item in parent directory', function(done) {
             var shouldPath = path.join(__dirname, '../package.json');
 
-            helpers.findItem('package.json', 'file', __dirname, true, function(err, foundPath) {
+            helpers.findItem('package.json', 'file', __dirname, true, function(
+                err,
+                foundPath
+            ) {
                 assert.isNull(err);
                 assert.equal(foundPath, shouldPath);
                 done();
@@ -132,19 +146,27 @@ describe('helpers', function() {
         });
 
         it('should return an error when cannot find item', function(done) {
-
-            helpers.findItem('1234567890987654321', 'file', __dirname, true, function(err, foundPath) {
-                assert.ok(err);
-                assert.isUndefined(foundPath);
-                done();
-            });
+            helpers.findItem(
+                '1234567890987654321',
+                'file',
+                __dirname,
+                true,
+                function(err, foundPath) {
+                    assert.ok(err);
+                    assert.isUndefined(foundPath);
+                    done();
+                }
+            );
         });
 
         it('should find directory in current directory', function(done) {
             var shouldPath = path.join(__dirname, './src');
 
             // purpose tell it to look for a .dotfile that is a directory
-            helpers.findItem('src', 'directory', __dirname, false, function(err, foundPath) {
+            helpers.findItem('src', 'directory', __dirname, false, function(
+                err,
+                foundPath
+            ) {
                 assert.isNull(err);
                 assert.equal(foundPath, shouldPath);
                 done();
@@ -155,7 +177,10 @@ describe('helpers', function() {
             var shouldPath = path.join(__dirname, '../lib');
 
             // purpose tell it to look for a .dotfile that is a directory
-            helpers.findItem('lib', 'directory', __dirname, true, function(err, foundPath) {
+            helpers.findItem('lib', 'directory', __dirname, true, function(
+                err,
+                foundPath
+            ) {
                 assert.isNull(err);
                 assert.equal(foundPath, shouldPath);
                 done();
@@ -164,15 +189,24 @@ describe('helpers', function() {
 
         it('should return an error when cannot find directory', function(done) {
             // give it a garbage
-            helpers.findItem('.1234567890987654321', 'directory', __dirname, true, function(err, foundPath) {
-                assert.ok(err);
-                assert.isUndefined(foundPath);
-                done();
-            });
+            helpers.findItem(
+                '.1234567890987654321',
+                'directory',
+                __dirname,
+                true,
+                function(err, foundPath) {
+                    assert.ok(err);
+                    assert.isUndefined(foundPath);
+                    done();
+                }
+            );
         });
 
         it('should not find package.json (no recurse)', function(done) {
-            helpers.findItem('package.json', 'file', __dirname, false, function(err, foundPath) {
+            helpers.findItem('package.json', 'file', __dirname, false, function(
+                err,
+                foundPath
+            ) {
                 assert.ok(err);
                 assert.isUndefined(foundPath);
                 done();
@@ -181,7 +215,6 @@ describe('helpers', function() {
     });
 
     describe('node.js specific file traversal', function() {
-
         it('should find the node_modules directory', function(done) {
             var shouldPath = path.join(__dirname, '../node_modules');
 
@@ -193,8 +226,10 @@ describe('helpers', function() {
         });
 
         it('should not find the node_modules directory', function(done) {
-
-            helpers.findNodeModulesPath('/usr/local/etc/', function(err, foundPath) {
+            helpers.findNodeModulesPath('/usr/local/etc/', function(
+                err,
+                foundPath
+            ) {
                 assert.ok(err);
                 assert.isUndefined(foundPath);
                 done();
@@ -204,7 +239,10 @@ describe('helpers', function() {
         it('should find the node_modules/{module} directory', function(done) {
             var shouldPath = path.join(__dirname, '../node_modules/mocha');
 
-            helpers.findNodeModulePath(__dirname, 'mocha', function(err, foundPath) {
+            helpers.findNodeModulePath(__dirname, 'mocha', function(
+                err,
+                foundPath
+            ) {
                 assert.isNull(err);
                 assert.equal(foundPath, shouldPath);
                 done();
@@ -222,7 +260,6 @@ describe('helpers', function() {
         });
 
         it('should return package.json contents', function(done) {
-
             helpers.openPackageJson(__dirname, function(err, pkgJson) {
                 assert.isNull(err);
                 assert.isObject(pkgJson);
@@ -256,11 +293,13 @@ describe('helpers', function() {
     });
 
     describe('find and open files using require() semantics', function() {
-
         it('should use require() semantics to find a file with extension', function(done) {
             var shouldPath = path.resolve(__dirname, 'src/a.js');
 
-            helpers.findWithRequireSemantics(__dirname, './src/a', function(err, foundData) {
+            helpers.findWithRequireSemantics(__dirname, './src/a', function(
+                err,
+                foundData
+            ) {
                 assert.isNull(err);
                 assert.equal(foundData.foundPath, shouldPath);
                 assert.isObject(foundData.statInfo);
@@ -271,7 +310,10 @@ describe('helpers', function() {
         it('should use require() semantics to find a file with no extension (index.js)', function(done) {
             var shouldPath = path.resolve(__dirname, 'src/index.js');
 
-            helpers.findWithRequireSemantics(__dirname, './src', function(err, foundData) {
+            helpers.findWithRequireSemantics(__dirname, './src', function(
+                err,
+                foundData
+            ) {
                 assert.isNull(err);
                 assert.equal(foundData.foundPath, shouldPath);
                 assert.isObject(foundData.statInfo);
@@ -280,25 +322,44 @@ describe('helpers', function() {
         });
 
         it('should use require() semantics to find a file within node_modules', function(done) {
-            var shouldPath = path.resolve(__dirname, '../node_modules/lodash/array/chunk.js');
+            var shouldPath = path.resolve(
+                __dirname,
+                '../node_modules/vasync/lib/vasync.js'
+            );
 
-            helpers.findWithRequireSemantics(__dirname, 'lodash/array/chunk', function(err, foundData) {
-                assert.isNull(err);
-                assert.equal(foundData.foundPath, shouldPath);
-                assert.isObject(foundData.statInfo);
-                done();
-            });
+            helpers.findWithRequireSemantics(
+                __dirname,
+                'vasync/lib/vasync',
+                function(err, foundData) {
+                    assert.isNull(err);
+                    assert.equal(foundData.foundPath, shouldPath);
+                    assert.isObject(foundData.statInfo);
+                    done();
+                }
+            );
         });
 
         it('should use package.json to find main entry point of a node_module', function(done) {
-            var shouldModulePath = path.join(__dirname, '../node_modules/lodash');
+            var shouldModulePath = path.join(
+                __dirname,
+                '../node_modules/lodash'
+            );
 
-            helpers.findNodeModulePath(__dirname, 'lodash', function(err, modulePath) {
+            helpers.findNodeModulePath(__dirname, 'lodash', function(
+                err,
+                modulePath
+            ) {
                 assert.isNull(err);
                 assert.equal(modulePath, shouldModulePath);
 
-                helpers.findNodeModuleMainEntry(modulePath, function(findErr, foundData) {
-                    var shouldEntryPoint = path.join(shouldModulePath, 'index.js');
+                helpers.findNodeModuleMainEntry(modulePath, function(
+                    findErr,
+                    foundData
+                ) {
+                    var shouldEntryPoint = path.join(
+                        shouldModulePath,
+                        'lodash.js'
+                    );
 
                     assert.isNull(findErr);
                     assert.equal(foundData.foundPath, shouldEntryPoint);
@@ -311,7 +372,10 @@ describe('helpers', function() {
         it('should use require() semantics to open a file', function(done) {
             var shouldPath = path.resolve(__dirname, 'src/a.js');
 
-            helpers.openWithRequireSemantics(__dirname, './src/a', function(err, data) {
+            helpers.openWithRequireSemantics(__dirname, './src/a', function(
+                err,
+                data
+            ) {
                 assert.isNull(err);
                 assert.equal(data.foundPath, shouldPath);
                 assert.isObject(data.statInfo);
@@ -320,5 +384,4 @@ describe('helpers', function() {
             });
         });
     });
-
 });
